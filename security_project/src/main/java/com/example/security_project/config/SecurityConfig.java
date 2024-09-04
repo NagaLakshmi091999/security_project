@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import jakarta.servlet.Filter;
+
 @Configuration
 @EnableWebSecurity //Here this annotation tells Don't go with default flow. Flow with what I mention here.
 public class SecurityConfig {
@@ -39,7 +41,7 @@ public class SecurityConfig {
 		//http.formLogin(Customizer.withDefaults());//this line is for webpage formLogin
 		http.httpBasic(Customizer.withDefaults());//this line is for postman
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		http.addFilterBefore(, UsernamePasswordAuthenticationToken.class)
+		http.addFilterBefore(jwtFilter, (Class<? extends Filter>) UsernamePasswordAuthenticationToken.class);
 		return http.build();
 		
 	}
